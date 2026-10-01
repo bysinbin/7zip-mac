@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>7-Zip</title>
+    <link rel="stylesheet" href="main.css"/>
+</head>
+<body class="mac-app">
+    <!-- Window Drag Bar / App Header -->
+    <header class="window-header">
+        <div class="traffic-light-spacer"></div>
+        <div class="app-brand">
+            <div class="brand-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+            </div>
+            <span class="brand-title">7-Zip</span>
+            <span class="brand-badge">macOS</span>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" id="tab-extract-btn" onclick="switchTab('extract')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>İncele & Çıkar</span>
+            </button>
+            <button class="nav-tab" id="tab-compress-btn" onclick="switchTab('compress')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <span>Yeni Arşiv</span>
+            </button>
+            <button class="nav-tab" id="tab-history-btn" onclick="switchTab('history')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                <span>Geçmiş</span>
+            </button>
+        </nav>
+
+        <!-- Quick Action Buttons -->
+        <div class="header-actions">
+            <button class="btn btn-secondary btn-sm" onclick="handleSelectArchiveFile()" title="Arşiv Dosyası Aç (⌘O)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span>Arşiv Aç...</span>
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="switchTab('compress')" title="Yeni Arşiv Oluştur (⌘N)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span>Yeni Arşiv</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-content">
+        <!-- ================= TAB 1: BROWSE & EXTRACT ================= -->
+        <section id="view-extract" class="view-panel active">
+            <!-- Empty State / Dropzone -->
+            <div id="extract-empty" class="drop-zone" onclick="handleSelectArchiveFile()">
+                <div class="drop-zone-content">
+                    <div class="drop-icon-wrapper">
+                        <div class="glow-orb"></div>
+                        <svg class="drop-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M4 22h14a2 2 0 0 0 2-2V7.5L14.5 2H6a2 2 0 0 0-2 2v4"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <path d="M2 15h10"></path>
+                            <path d="m9 18 3-3-3-3"></path>
+                        </svg>
+                    </div>
+                    <h2>Arşiv dosyasını buraya sürükleyin</h2>
+                    <p class="drop-desc">.7z, .zip, .rar, .tar, .gz, .xz, .iso, .dmg, .cab, .zst ve daha fazlası</p>
+                    <button class="btn btn-primary btn-lg" onclick="event.stopPropagation(); handleSelectArchiveFile()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        <span>Dosya Seç...</span>
+                    </button>
+                    <div class="drop-shortcuts">
+                        <span>veya klavyeden <strong>⌘O</strong> tuşlayın</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loaded State: File Explorer -->
+            <div id="extract-loaded" class="archive-explorer hidden">
+                <!-- Archive Summary Bar -->
+                <div class="archive-info-bar">
+                    <div class="archive-meta">
+                        <div class="archive-type-badge" id="arch-type-badge">7Z</div>
+                        <div class="archive-details">
+                            <div class="archive-name-row">
+                                <h3 id="arch-name" class="archive-name" title="">archive.7z</h3>
+                                <span class="badge badge-success" id="arch-method-badge">LZMA2</span>
+                                <span class="badge badge-warning hidden" id="arch-encrypted-badge">🔒 Şifreli</span>
+                            </div>
+                            <div class="archive-stats-row">
+                                <span id="arch-stats-files">0 dosya</span>
+                                <span class="dot-separator">•</span>
+                                <span id="arch-stats-size">0 B</span>
+                                <span class="dot-separator">•</span>
+                                <span id="arch-stats-packed">Sıkıştırılmış: 0 B</span>
+                                <span class="dot-separator">•</span>
+                                <span class="ratio-tag" id="arch-stats-ratio">%0 tasarruf</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="archive-actions">
+                        <button class="btn btn-secondary btn-sm" onclick="handleTestArchive()" title="Arşiv Bütünlüğünü Test Et">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <span>Test Et</span>
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="handleRevealInFinder()" title="Finder'da Göster">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            <span>Finder</span>
+                        </button>
+                        <button class="btn btn-secondary btn-sm" id="btn-extract-selected" onclick="handleExtractSelected()" disabled title="Sadece seçilen dosyaları çıkar">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="8 17 12 21 16 17"></polyline>
+                                <line x1="12" y1="12" x2="12" y2="21"></line>
+                                <path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"></path>
+                            </svg>
+                            <span id="label-extract-selected">Seçilenleri Çıkar</span>
+                        </button>
+                        <button class="btn btn-primary btn-sm" onclick="handleExtractAll()" title="Tüm arşivi bir klasöre çıkar">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            <span>Tümünü Çıkar</span>
+                        </button>
+                        <button class="btn btn-ghost btn-icon btn-sm" onclick="handleCloseArchive()" title="Kapat">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Navigation Bar & Search -->
+                <div class="explorer-toolbar">
+                    <div class="nav-breadcrumbs" id="breadcrumbs-container">
+                        <button class="breadcrumb-item active" onclick="navigateToPath('')">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            </svg>
+                            <span>Kök Dizin</span>
+                        </button>
+                    </div>
+                    <div class="toolbar-search">
+                        <div class="search-input-wrapper">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input type="text" id="archive-filter-input" placeholder="Dosyalarda filtrele..." oninput="handleFilterInput(this.value)"/>
+                            <button id="search-clear-btn" class="clear-search hidden" onclick="clearFilter()">✕</button>
+                        </div>
+                        <span class="items-counter" id="items-counter-label">0 öge</span>
+                    </div>
+                </div>
+
+                <!-- Table View -->
+                <div class="table-container">
+                    <table class="file-table" id="archive-table">
+                        <thead>
+                            <tr>
+                                <th class="col-check">
+                                    <input type="checkbox" id="select-all-check" onchange="toggleSelectAll(this.checked)"/>
+                                </th>
+                                <th class="col-name" onclick="sortArchiveBy('name')">
+                                    <span>Adı</span>
+                                    <span class="sort-indicator" id="sort-name-icon"></span>
+                                </th>
+                                <th class="col-size" onclick="sortArchiveBy('size')">
+                                    <span>Boyut</span>
+                                    <span class="sort-indicator" id="sort-size-icon"></span>
+                                </th>
+                                <th class="col-packed" onclick="sortArchiveBy('packed')">
+                                    <span>Sıkıştırılmış</span>
+                                    <span class="sort-indicator" id="sort-packed-icon"></span>
+                                </th>
+                                <th class="col-date" onclick="sortArchiveBy('date')">
+                                    <span>Değiştirilme</span>
+                                    <span class="sort-indicator" id="sort-date-icon"></span>
+                                </th>
+                                <th class="col-attr">Nitelik</th>
+                                <th class="col-crc">CRC</th>
+                                <th class="col-action">İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="archive-tbody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 2: COMPRESS / NEW ARCHIVE ================= -->
+        <section id="view-compress" class="view-panel">
+            <div class="compress-layout">
+                <!-- Left Column: Source Files -->
+                <div class="compress-files-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            <h3>Sıkıştırılacak Dosyalar</h3>
+                        </div>
+                        <span class="badge badge-info" id="compress-files-badge">0 Öge</span>
+                    </div>
+
+                    <!-- Add items drop area -->
+                    <div class="compress-dropzone" id="compress-drop-area">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <p>Dosyaları veya klasörleri buraya sürükleyin</p>
+                        <div class="compress-btn-group">
+                            <button class="btn btn-secondary btn-sm" onclick="handleAddFilesToCompress()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                <span>Dosya Ekle...</span>
+                            </button>
+                            <button class="btn btn-secondary btn-sm" onclick="handleAddFolderToCompress()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                                    <line x1="12" y1="11" x2="12" y2="17"></line>
+                                    <line x1="9" y1="14" x2="15" y2="14"></line>
+                                </svg>
+                                <span>Klasör Ekle...</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Files list -->
+                    <div class="compress-list-container">
+                        <ul class="compress-items-list" id="compress-items-list">
+                            <li class="empty-list-notice">Henüz dosya eklenmedi</li>
+                        </ul>
+                    </div>
+
+                    <div class="compress-list-footer">
+                        <span id="compress-total-size-label">Toplam: 0 B</span>
+                        <button class="btn btn-ghost btn-sm text-danger" onclick="clearCompressFiles()" id="btn-clear-compress" disabled>
+                            <span>Listeyi Temizle</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Column: Settings & Output -->
+                <div class="compress-settings-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                            </svg>
+                            <h3>Arşivleme Ayarları</h3>
+                        </div>
+                    </div>
+
+                    <div class="settings-form">
+                        <!-- Format Selection -->
+                        <div class="form-group">
+                            <label class="form-label">Arşiv Formatı</label>
+                            <div class="format-chips-grid">
+                                <label class="format-chip active">
+                                    <input type="radio" name="archive-format" value="7z" checked onchange="handleFormatChange('7z')"/>
+                                    <span class="chip-title">.7z</span>
+                                    <span class="chip-desc">Ultra LZMA2</span>
+                                </label>
+                                <label class="format-chip">
+                                    <input type="radio" name="archive-format" value="zip" onchange="handleFormatChange('zip')"/>
+                                    <span class="chip-title">.zip</span>
+                                    <span class="chip-desc">Evrensel</span>
+                                </label>
+                                <label class="format-chip">
+                                    <input type="radio" name="archive-format" value="tar.gz" onchange="handleFormatChange('tar.gz')"/>
+                                    <span class="chip-title">.tar.gz</span>
+                                    <span class="chip-desc">Linux / Gzip</span>
+                                </label>
+                                <label class="format-chip">
+                                    <input type="radio" name="archive-format" value="tar.xz" onchange="handleFormatChange('tar.xz')"/>
+                                    <span class="chip-title">.tar.xz</span>
+                                    <span class="chip-desc">XZ Sıkıştırma</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Compression Level -->
+                        <div class="form-group">
+                            <div class="label-with-hint">
+                                <label class="form-label">Sıkıştırma Seviyesi</label>
+                                <span class="hint-text" id="level-desc-label">Normal (Dengeli hız ve boyut)</span>
+                            </div>
+                            <div class="segmented-control">
+                                <button type="button" class="seg-btn" onclick="setCompressionLevel(0, this)">Depola (0)</button>
+                                <button type="button" class="seg-btn" onclick="setCompressionLevel(1, this)">Hızlı (1)</button>
+                                <button type="button" class="seg-btn active" onclick="setCompressionLevel(5, this)">Normal (5)</button>
+                                <button type="button" class="seg-btn" onclick="setCompressionLevel(7, this)">Maksimum (7)</button>
+                                <button type="button" class="seg-btn" onclick="setCompressionLevel(9, this)">Ultra (9)</button>
+                            </div>
+                        </div>
+
+                        <!-- Password & Encryption -->
+                        <div class="form-group">
+                            <label class="form-label">Şifreleme (AES-256)</label>
+                            <div class="password-input-group">
+                                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                                <input type="password" id="compress-password" placeholder="İsteğe bağlı parola belirleyin..."/>
+                                <button type="button" class="btn-toggle-eye" onclick="togglePasswordVisibility('compress-password', this)">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="checkbox-row" id="encrypt-header-row">
+                                <input type="checkbox" id="encrypt-header-check"/>
+                                <label for="encrypt-header-check">
+                                    <strong>Dosya İsimlerini Şifrele</strong> (.7z şifresi girilmeden dosya adları görünmez)
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Advanced Settings (Split Volumes) -->
+                        <details class="advanced-accordion">
+                            <summary class="accordion-summary">
+                                <span>Gelişmiş Seçenekler (Ciltlere Bölme & Çekirdekler)</span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <div class="accordion-content">
+                                <div class="form-group">
+                                    <label class="form-label">Ciltlere / Parçalara Böl (Split Volume)</label>
+                                    <select id="compress-split-volume" class="form-select">
+                                        <option value="">Bölme (Tek Parça)</option>
+                                        <option value="10m">10 MB (Parçalı)</option>
+                                        <option value="25m">25 MB (E-posta)</option>
+                                        <option value="100m">100 MB</option>
+                                        <option value="700m">700 MB (CD)</option>
+                                        <option value="4480m">4.7 GB (DVD)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">CPU İş Parçacığı (Multi-threading)</label>
+                                    <select id="compress-threads" class="form-select">
+                                        <option value="0">Otomatik (Tüm CPU Çekirdekleri)</option>
+                                        <option value="1">1 İş Parçacığı</option>
+                                        <option value="2">2 İş Parçacığı</option>
+                                        <option value="4">4 İş Parçacığı</option>
+                                        <option value="8">8 İş Parçacığı</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </details>
+
+                        <!-- Destination & Action -->
+                        <div class="form-group destination-section">
+                            <label class="form-label">Kaydedilecek Konum ve Ad</label>
+                            <div class="destination-row">
+                                <input type="text" id="compress-output-path" placeholder="Arşiv kaydedilecek yer..." readonly/>
+                                <button type="button" class="btn btn-secondary" onclick="handleChooseSaveLocation()">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                                    </svg>
+                                    <span>Gözat...</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-xl btn-compress-submit" id="btn-start-compress" onclick="handleStartCompression()">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            </svg>
+                            <span>Arşivi Oluştur</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 3: HISTORY ================= -->
+        <section id="view-history" class="view-panel">
+            <div class="history-container">
+                <div class="history-header">
+                    <div>
+                        <h2>Son Kullanılan Arşivler</h2>
+                        <p class="history-subtitle">Son açılan veya oluşturulan arşivlere hızlı erişim</p>
+                    </div>
+                    <button class="btn btn-ghost btn-sm text-danger" onclick="handleClearHistory()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        <span>Geçmişi Temizle</span>
+                    </button>
+                </div>
+                <div class="history-list-wrapper">
+                    <ul class="history-list" id="history-items-list">
+                        <!-- Populated dynamically -->
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= MODALS & DIALOGS ================= -->
+
+    <!-- Password Modal -->
+    <dialog id="modal-password" class="mac-dialog">
+        <div class="dialog-content">
+            <div class="dialog-icon-circle lock-circle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+            </div>
+            <h3>Şifreli Arşiv</h3>
+            <p id="password-dialog-desc">Bu arşiv şifre korumalıdır. İçeriği görüntülemek için lütfen parolayı girin.</p>
+            <div class="dialog-input-group">
+                <input type="password" id="modal-password-input" placeholder="Arşiv parolası..." autocomplete="off"/>
+                <button type="button" class="btn-toggle-eye" onclick="togglePasswordVisibility('modal-password-input', this)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </button>
+            </div>
+            <div class="dialog-error-msg hidden" id="password-error-msg">Hatalı şifre. Lütfen tekrar deneyin.</div>
+            <div class="dialog-actions">
+                <button class="btn btn-secondary" onclick="closePasswordModal(false)">İptal</button>
+                <button class="btn btn-primary" onclick="submitPasswordModal()">Kilidi Aç</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Progress Modal -->
+    <dialog id="modal-progress" class="mac-dialog">
+        <div class="dialog-content progress-dialog-content">
+            <div class="progress-header">
+                <div class="dialog-icon-circle spin-circle" id="progress-spinner-icon">
+                    <svg class="animate-spin" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="2" x2="12" y2="6"></line>
+                        <line x1="12" y1="18" x2="12" y2="22"></line>
+                        <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                        <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                        <line x1="2" y1="12" x2="6" y2="12"></line>
+                        <line x1="18" y1="12" x2="22" y2="12"></line>
+                        <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                        <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+                    </svg>
+                </div>
+                <div class="dialog-icon-circle success-circle hidden" id="progress-success-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div>
+                    <h3 id="progress-title">İşlem Yapılıyor...</h3>
+                    <p id="progress-subtitle" class="progress-sub">Lütfen bekleyin...</p>
+                </div>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="progress-bar-fill" style="width: 0%"></div>
+            </div>
+
+            <div class="progress-meta-row">
+                <span id="progress-percentage-label">0%</span>
+                <span id="progress-file-label" class="progress-filename" title="">Hazırlanıyor...</span>
+            </div>
+
+            <div class="dialog-actions" id="progress-actions">
+                <button class="btn btn-secondary" id="btn-cancel-progress" onclick="handleCancelOperation()">İptal Et</button>
+                <button class="btn btn-secondary hidden" id="btn-open-target-folder" onclick="handleOpenTargetFolder()">Finder'da Aç</button>
+                <button class="btn btn-primary hidden" id="btn-done-progress" onclick="closeProgressModal()">Tamam</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Test Integrity Modal -->
+    <dialog id="modal-test" class="mac-dialog">
+        <div class="dialog-content">
+            <div class="dialog-icon-circle" id="test-result-icon">
+                <!-- SVG dynamically injected -->
+            </div>
+            <h3 id="test-result-title">Arşiv Bütünlük Testi</h3>
+            <p id="test-result-desc">Test tamamlandı.</p>
+            <div id="test-errors-box" class="test-errors-container hidden"></div>
+            <div class="dialog-actions">
+                <button class="btn btn-primary" onclick="closeTestModal()">Tamam</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-stack"></div>
+
+    <script type="module" src="main.js"></script>
+</body>
+</html>

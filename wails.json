@@ -1,0 +1,63 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "7-Zip",
+  "outputfilename": "7-Zip",
+  "frontend:build": "",
+  "frontend:install": "",
+  "wailsjsdir": "./frontend/src",
+  "version": "2",
+  "author": {
+    "name": "bysinbin"
+  },
+  "info": {
+    "companyName": "bysinbin",
+    "productName": "7-Zip",
+    "productVersion": "1.0.0",
+    "copyright": "Copyright © 2026 bysinbin",
+    "comments": "Modern 7-Zip GUI for macOS",
+    "fileAssociations": [
+      {
+        "ext": "7z",
+        "name": "7-Zip Archive",
+        "role": "Viewer",
+        "iconName": "iconfile"
+      },
+      {
+        "ext": "zip",
+        "name": "Zip Archive",
+        "role": "Viewer",
+        "iconName": "iconfile"
+      },
+      {
+        "ext": "rar",
+        "name": "RAR Archive",
+        "role": "Viewer",
+        "iconName": "iconfile"
+      },
+      {
+        "ext": "tar",
+        "name": "Tape Archive",
+        "role": "Viewer",
+        "iconName": "iconfile"
+      },
+      {
+        "ext": "gz",
+        "name": "Gzip Archive",
+        "role": "Viewer",
+        "iconName": "iconfile"
+      },
+      {
+        "ext": "xz",
+        "name": "XZ Archive",
+        "role": "Viewer",
+        "iconName": "iconfile"
+      },
+      {
+        "ext": "bz2",
+        "name": "Bzip2 Archive",
+        "role": "Viewer",
+        "iconName": "iconfile"
+      }
+    ]
+  }
+}
