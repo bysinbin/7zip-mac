@@ -338,32 +338,22 @@ func (a *App) GetSystemInfo() map[string]interface{} {
 
 // InstallFinderActions installs Finder Quick Actions workflows into ~/Library/Services
 func (a *App) InstallFinderActions() (string, error) {
-	cmd := exec.Command("python3", "scripts/generate_workflows.py")
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		return "", fmt.Errorf("failed to install Finder actions: %s (%w)", string(out), err)
+	if err := engine.InstallFinderWorkflows(); err != nil {
+		return "", fmt.Errorf("failed to install Finder actions: %w", err)
 	}
 	return "Finder sağ tık eylemleri başarıyla kuruldu!", nil
 }
 
 // UninstallFinderActions removes Finder Quick Actions workflows from ~/Library/Services
 func (a *App) UninstallFinderActions() (string, error) {
-	cmd := exec.Command("python3", "scripts/generate_workflows.py", "uninstall")
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		return "", fmt.Errorf("failed to uninstall Finder actions: %s (%w)", string(out), err)
+	if err := engine.UninstallFinderWorkflows(); err != nil {
+		return "", fmt.Errorf("failed to uninstall Finder actions: %w", err)
 	}
 	return "Finder sağ tık eylemleri kaldırıldı.", nil
 }
 
 // CheckFinderActionsInstalled checks whether 7-Zip workflows are currently installed
 func (a *App) CheckFinderActionsInstalled() bool {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		return false
-	}
-	wfPath := filepath.Join(homeDir, "Library", "Services", "7-Zip ile Buraya Çıkar.workflow")
-	_, err = os.Stat(wfPath)
-	return err == nil
+	return engine.AreFinderWorkflowsInstalled()
 }
 
