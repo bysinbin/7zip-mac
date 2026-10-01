@@ -4,6 +4,8 @@ import {engine} from '../models';
 
 export function CancelOperation():Promise<void>;
 
+export function CheckFinderActionsInstalled():Promise<boolean>;
+
 export function ClearRecentArchives():Promise<void>;
 
 export function CompressArchive(arg1:engine.CompressOptions):Promise<void>;
@@ -13,6 +15,8 @@ export function ExtractArchive(arg1:engine.ExtractOptions):Promise<void>;
 export function GetRecentArchives():Promise<Array<string>>;
 
 export function GetSystemInfo():Promise<Record<string, any>>;
+
+export function InstallFinderActions():Promise<string>;
 
 export function OpenArchive(arg1:string,arg2:string):Promise<engine.ArchiveInfo>;
 
@@ -31,3 +35,5 @@ export function SelectOutputDirectory(arg1:string):Promise<string>;
 export function SelectSaveArchivePath(arg1:string,arg2:string):Promise<string>;
 
 export function TestArchive(arg1:string,arg2:string):Promise<engine.TestResult>;
+
+export function UninstallFinderActions():Promise<string>;

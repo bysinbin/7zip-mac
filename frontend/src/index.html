@@ -51,6 +51,13 @@
 
         <!-- Quick Action Buttons -->
         <div class="header-actions">
+            <button class="btn btn-secondary btn-sm" id="btn-finder-integration" onclick="handleToggleFinderActions()" title="Finder Sağ Tık (Hızlı Eylemler) Entegrasyonunu Yönet">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                    <polyline points="21 15 16 10 5 21"></polyline>
+                </svg>
+                <span id="finder-status-label">Finder Menüsü</span>
+            </button>
             <button class="btn btn-secondary btn-sm" onclick="handleSelectArchiveFile()" title="Arşiv Dosyası Aç (⌘O)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>

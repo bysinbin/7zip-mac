@@ -23,25 +23,35 @@
         <string>true</string>
         <key>NSHumanReadableCopyright</key>
         <string>{{.Info.Copyright}}</string>
-        {{if .Info.FileAssociations}}
         <key>CFBundleDocumentTypes</key>
         <array>
-          {{range .Info.FileAssociations}}
-          <dict>
-            <key>CFBundleTypeExtensions</key>
-            <array>
-              <string>{{.Ext}}</string>
-            </array>
-            <key>CFBundleTypeName</key>
-            <string>{{.Name}}</string>
-            <key>CFBundleTypeRole</key>
-            <string>{{.Role}}</string>
-            <key>CFBundleTypeIconFile</key>
-            <string>{{.IconName}}</string>
-          </dict>
-          {{end}}
+            <dict>
+                <key>CFBundleTypeExtensions</key>
+                <array>
+                    <string>7z</string>
+                    <string>zip</string>
+                    <string>rar</string>
+                    <string>tar</string>
+                    <string>gz</string>
+                    <string>tgz</string>
+                    <string>bz2</string>
+                    <string>tbz2</string>
+                    <string>xz</string>
+                    <string>txz</string>
+                    <string>iso</string>
+                    <string>dmg</string>
+                    <string>cab</string>
+                    <string>zst</string>
+                    <string>wim</string>
+                </array>
+                <key>CFBundleTypeName</key>
+                <string>Archive</string>
+                <key>CFBundleTypeRole</key>
+                <string>Viewer</string>
+                <key>LSHandlerRank</key>
+                <string>Alternate</string>
+            </dict>
         </array>
-        {{end}}
         {{if .Info.Protocols}}
         <key>CFBundleURLTypes</key>
         <array>

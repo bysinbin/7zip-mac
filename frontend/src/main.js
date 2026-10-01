@@ -28,7 +28,41 @@ window.addEventListener('DOMContentLoaded', () => {
     initEventListeners();
     initWailsEvents();
     loadRecentHistory();
+    checkFinderStatus();
 });
+
+async function checkFinderStatus() {
+    const label = document.getElementById('finder-status-label');
+    if (!label) return;
+    try {
+        const installed = await App.CheckFinderActionsInstalled();
+        if (installed) {
+            label.textContent = 'Finder: Aktif ✓';
+            label.parentElement.title = 'Finder sağ tık eylemleri devrede. Tıklayarak kaldırabilirsiniz.';
+        } else {
+            label.textContent = 'Finder Menüsü';
+            label.parentElement.title = 'Finder sağ tık menüsüne 7-Zip eylemlerini kurmak için tıklayın.';
+        }
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+window.handleToggleFinderActions = async function() {
+    try {
+        const installed = await App.CheckFinderActionsInstalled();
+        if (installed) {
+            const res = await App.UninstallFinderActions();
+            showToast(res, 'info');
+        } else {
+            const res = await App.InstallFinderActions();
+            showToast(res, 'success');
+        }
+        await checkFinderStatus();
+    } catch (err) {
+        showToast('Finder eylem hatası: ' + err, 'danger');
+    }
+};
 
 function initEventListeners() {
     // Keyboard shortcuts

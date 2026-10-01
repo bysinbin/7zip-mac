@@ -18,7 +18,16 @@ dev:
 test:
 	@go test -v ./...
 
+# Finder Sağ Tık (Hızlı Eylemler) Entegrasyonunu Yükle
+install-finder-actions:
+	@python3 scripts/generate_workflows.py
+
+# Finder Sağ Tık Entegrasyonunu Kaldır
+uninstall-finder-actions:
+	@python3 scripts/generate_workflows.py uninstall
+
 # Derleme Artıklarını Temizle
 clean:
 	@rm -rf build/bin
 	@go clean
+

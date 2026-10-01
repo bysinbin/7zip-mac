@@ -6,6 +6,10 @@ export function CancelOperation() {
   return window['go']['main']['App']['CancelOperation']();
 }
 
+export function CheckFinderActionsInstalled() {
+  return window['go']['main']['App']['CheckFinderActionsInstalled']();
+}
+
 export function ClearRecentArchives() {
   return window['go']['main']['App']['ClearRecentArchives']();
 }
@@ -24,6 +28,10 @@ export function GetRecentArchives() {
 
 export function GetSystemInfo() {
   return window['go']['main']['App']['GetSystemInfo']();
+}
+
+export function InstallFinderActions() {
+  return window['go']['main']['App']['InstallFinderActions']();
 }
 
 export function OpenArchive(arg1, arg2) {
@@ -60,4 +68,8 @@ export function SelectSaveArchivePath(arg1, arg2) {
 
 export function TestArchive(arg1, arg2) {
   return window['go']['main']['App']['TestArchive'](arg1, arg2);
+}
+
+export function UninstallFinderActions() {
+  return window['go']['main']['App']['UninstallFinderActions']();
 }

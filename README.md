@@ -33,11 +33,14 @@ Resmi Igor Pavlov **7-Zip (7zz v26.03)** universal (Apple Silicon ARM64 ve Intel
 - **Ciltlere / Parçalara Bölme (Split Volumes)**: 10 MB, 25 MB (E-posta), 100 MB, 700 MB (CD), 4.7 GB (DVD).
 - **Çoklu İş Parçacığı (Multi-threading)**: CPU çekirdeklerini tam kapasite kullanarak maksimum hızda sıkıştırma.
 
-### 🎨 macOS Tasarım ve Kullanıcı Deneyimi
-- **Apple Human Interface Guidelines (HIG)** esintili karanlık mod ve cam efekti (Glassmorphism).
-- **Pencere Başlığı Entegrasyonu**: macOS kırmızı/sarı/yeşil pencere kontrol butonları ile uyumlu modern başlık çubuğu.
-- **Canlı İlerleme Çubuğu (Progress Indicator)**: Gerçek zamanlı yüzde, işlenen dosya adı, geçen süre ve iptal edebilme imkanı.
-- **Son Kullanılanlar (History)**: Son açılan veya oluşturulan arşivlere hızlı erişim.
+### 🖱️ macOS Finder Sağ Tık Entegrasyonu (Hızlı Eylemler / Quick Actions)
+Finder içinde herhangi bir dosya veya arşive sağ tıkladığınızda doğrudan erişilebilir:
+- **7-Zip ile Buraya Çıkar**: Arşiv dosyalarına sağ tıklayıp anında bulunduğu klasöre çıkarma (şifreliyse parola sorar).
+- **7-Zip ile Sıkıştır (.7z)**: Seçilen dosya/klasörleri tek tıkla en yüksek LZMA2 sıkıştırmasıyla `.7z` yapma.
+- **7-Zip ile Sıkıştır (.zip)**: Seçilen dosyaları standart `.zip` arşivine dönüştürme.
+- **7-Zip ile Aç**: Arşivi 7-Zip grafik arayüzünde görüntüleme.
+- **Birlikte Aç (Open With)**: Tüm arşiv türleri için sağ tık -> *Birlikte Aç* -> **7-Zip**.
+- **Tek Tıkla Kurulum**: Uygulama arayüzündeki *"Finder Menüsü"* butonundan veya terminalden `make install-finder-actions` ile anında aktif edilir.
 
 ---
 
