@@ -8,7 +8,15 @@ build:
 
 # Uygulamayı Çalıştır
 run:
-	@open build/bin/7-Zip.app
+	@open /Applications/7-Zip.app 2>/dev/null || open build/bin/7-Zip.app
+
+# /Applications Klasörüne Kur
+install: build
+	@cp -R build/bin/7-Zip.app /Applications/7-Zip.app
+	@/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f /Applications/7-Zip.app
+	@python3 scripts/generate_workflows.py
+	@echo "==> 7-Zip başarıyla /Applications klasörüne kuruldu ve Finder entegrasyonu güncellendi!"
+
 
 # Canlı Geliştirme Modu (Live Reload)
 dev:
