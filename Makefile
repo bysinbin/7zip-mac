@@ -12,10 +12,11 @@ run:
 
 # /Applications Klasörüne Kur
 install: build
-	@cp -R build/bin/7-Zip.app /Applications/7-Zip.app
+	@pkill -f "7-Zip" 2>/dev/null || true
+	@rm -rf /Applications/7-Zip.app
+	@cp -R build/bin/7-Zip.app /Applications/
 	@/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f /Applications/7-Zip.app
-	@python3 scripts/generate_workflows.py
-	@echo "==> 7-Zip başarıyla /Applications klasörüne kuruldu ve Finder entegrasyonu güncellendi!"
+	@echo "==> 7-Zip başarıyla /Applications klasörüne kuruldu ve güncellendi!"
 
 
 # Canlı Geliştirme Modu (Live Reload)
